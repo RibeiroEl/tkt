@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Inválido - THE TOWN 2025</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ffcc00;
+            --secondary-color: #ffd633;
+            --dark-color: #121920;
+            --darker-color: #0a1014;
+            --light-color: #ffffff;
+            --gray-color: #f0f0f0;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-color);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background: var(--darker-color) !important;
+            backdrop-filter: blur(10px);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 204, 0, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        
+        .navbar-brand img {
+            height: 60px;
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .confirmation-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .confirmation-card {
+            background: rgba(18, 25, 32, 0.8);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 204, 0, 0.3);
+            padding: 60px 40px;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .confirmation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #dc3545, #a71d2a);
+        }
+        
+        .error-icon {
+            font-size: 80px;
+            color: #dc3545;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        
+        h1 span {
+            color: #dc3545;
+        }
+        
+        .lead {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            color: var(--dark-color);
+            margin-top: 20px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 204, 0, 0.3);
+            background-color: var(--secondary-color);
+        }
+        
+        footer {
+            background-color: var(--darker-color);
+            padding: 20px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 204, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/api/placeholder/180/60" alt="tikchek logo">
+            </a>
+        </div>
+    </nav>
+
+    <!-- Error Section -->
+    <section class="confirmation-section">
+        <div class="container">
+            <div class="confirmation-card">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                
+                <h1><span>Link Inválido</span> ou Expirado</h1>
+                <p class="lead">O link que você acessou é inválido ou já expirou. Isso pode acontecer se o link foi usado anteriormente ou se você já confirmou seu email.</p>
+                
+                <p>Se você ainda não se cadastrou, você pode fazer isso em nosso site:</p>
+                
+                <a href="/" class="btn btn-primary">Voltar para o site principal</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p class="mb-0">© 2025 THE TOWN. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

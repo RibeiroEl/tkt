@@ -1,0 +1,985 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Town 2025 - Garanta seu lugar!</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary-color: #ffcc00;
+        --secondary-color: #ffd633;
+        --dark-color: #121920;
+        --darker-color: #0a1014;
+        --light-color: #ffffff;
+        --gray-color: #f0f0f0;
+    }
+    
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--dark-color);
+        color: white;
+        overflow-x: hidden;
+        padding-top: 0; /* Resetando padding-top */
+    }
+    
+    .navbar {
+        background: var(--darker-color) !important;
+        backdrop-filter: blur(10px);
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 204, 0, 0.3);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+        padding: 0;
+    }
+    
+    .navbar-brand img {
+        height: 120px;
+        width: 180px;
+        margin-right: 15px;
+        transition: transform 0.3s ease;
+    }
+    
+    .navbar-brand:hover img {
+        transform: scale(1.05);
+    }
+    
+    .nav-link {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 5px;
+        padding: 8px 15px !important;
+        position: relative;
+        transition: all 0.3s ease;
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    .nav-link:hover, .nav-link.active {
+        color: var(--light-color) !important;
+    }
+    
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: var(--primary-color);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+        opacity: 0;
+    }
+    
+    .nav-link:hover::after, .nav-link.active::after {
+        width: 80%;
+        opacity: 1;
+    }
+    
+    .nav-link.btn {
+        color: var(--dark-color) !important;
+        font-weight: 700;
+        padding: 10px 20px !important;
+        border-radius: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 16px;
+        margin-left: 15px;
+        background-color: var(--primary-color);
+        border: none;
+        box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
+    }
+    
+    .nav-link.btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 204, 0, 0.6);
+        background-color: var(--secondary-color);
+    }
+    
+    .pulse-btn {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(255, 204, 0, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(255, 204, 0, 0);
+        }
+    }
+    
+    .hero-section {
+        background: linear-gradient(rgba(10, 16, 20, 0.8), rgba(18, 25, 32, 0.9)), url('/api/placeholder/1200/800') center/cover no-repeat;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 130px 0 80px 0; /* Aumentando o padding-top para compensar o header */
+    }
+    
+    .hero-content {
+        z-index: 10;
+    }
+    
+    .integrated-content {
+        background: rgba(18, 25, 32, 0.8);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 204, 0, 0.2);
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .artist-feature-img {
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .artist-feature-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        background-color: #000;
+        padding: 20px;
+    }
+    
+    .artist-feature-header {
+        background-color: rgba(10, 16, 20, 0.7);
+        padding: 30px;
+        height: auto;
+    }
+    
+    .email-form-integrated {
+        padding: 30px;
+        background-color: rgba(10, 16, 20, 0.5);
+        height: calc(100% - 180px); /* Ajuste baseado na altura do header */
+    }
+    
+    .email-form-integrated h3 {
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+    }
+    
+    .artist-feature-name {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.3rem;
+        color: var(--primary-color);
+    }
+    
+    .artist-feature-tagline {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        color: rgba(255, 255, 255, 0.9);
+        font-style: italic;
+    }
+    
+    .artist-feature-stats {
+        margin-bottom: 0;
+    }
+    
+    .artist-stat {
+        text-align: center;
+        margin-bottom: 0;
+    }
+    
+    .artist-stat-value {
+        display: block;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: var(--primary-color);
+    }
+    
+    .artist-stat-label {
+        display: block;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.7);
+    }
+    
+    h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        color: var(--light-color);
+    }
+    
+    h1 span {
+        color: var(--primary-color);
+    }
+    
+    .lead {
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 2rem;
+    }
+    
+    .btn-primary {
+        background-color: var(--primary-color);
+        border: none;
+        padding: 12px 30px;
+        font-weight: 600;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        color: var(--dark-color);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(255, 204, 0, 0.3);
+        background-color: var(--secondary-color);
+    }
+    
+    .form-control {
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 204, 0, 0.2);
+        color: white;
+        padding: 12px;
+        border-radius: 30px;
+        margin-bottom: 1rem;
+    }
+    
+    .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: white;
+        box-shadow: none;
+        border-color: var(--primary-color);
+    }
+    
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .info-section {
+        padding: 5rem 0;
+        background-color: var(--darker-color);
+    }
+    
+    .info-card {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 2rem;
+        border-radius: 15px;
+        height: 100%;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 204, 0, 0.1);
+    }
+    
+    .info-card:hover {
+        transform: translateY(-10px);
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 204, 0, 0.3);
+    }
+    
+    .info-card i {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+    }
+    
+    .info-card h4 {
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+    }
+    
+    .countdown-section {
+        padding: 100px 0 80px 0;
+        background: linear-gradient(rgba(10, 16, 20, 0.9), rgba(10, 16, 20, 0.9)), url('/api/placeholder/1200/600') center/cover no-repeat;
+        border-top: 1px solid rgba(255, 204, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 204, 0, 0.1);
+    }
+    
+    .countdown-box {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
+    }
+    
+    .countdown-item {
+        margin: 0 1rem;
+        text-align: center;
+        background-color: rgba(18, 25, 32, 0.8);
+        padding: 20px 30px;
+        border-radius: 15px;
+        min-width: 120px;
+        border: 1px solid rgba(255, 204, 0, 0.2);
+    }
+    
+    .countdown-item span {
+        display: block;
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--primary-color);
+    }
+    
+    .countdown-item p {
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-top: 0.5rem;
+        color: var(--light-color);
+    }
+    
+    .artists-section {
+        padding: 5rem 0;
+        background-color: var(--dark-color);
+    }
+    
+    .artist-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(255, 204, 0, 0.1);
+        transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    
+    .artist-img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    
+    .artist-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(10, 16, 20, 0.9));
+        padding: 2rem 1.5rem;
+        transform: translateY(100%);
+        opacity: 0;
+        transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    
+    .artist-card:hover .artist-img {
+        transform: scale(1.05);
+    }
+    
+    .artist-card:hover .artist-overlay {
+        transform: translateY(0);
+        opacity: 1;
+        background: linear-gradient(transparent 20%, rgba(10, 16, 20, 0.5) 60%, rgba(255, 204, 0, 0.5) 100%);
+    }
+    
+    .artist-name {
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #EFBF04;
+        transform: translateY(0);
+        opacity: 1;
+        transition: all 0.5s cubic-bezier #EFBF04;
+    }
+    
+    .artist-overlay p {
+        transform: translateY(0);
+        opacity: 0.8;
+        transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+        transition-delay: 0.1s;
+    }
+    
+    .artist-card:hover .artist-name {
+        color: #EFBF04;
+    }
+    
+    .artist-card:hover .artist-overlay p {
+        opacity: 1;
+    }
+    
+    .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--primary-color);
+        color: var(--dark-color);
+        padding: 15px 25px;
+        border-radius: 5px;
+        display: none;
+        z-index: 9999;
+        animation: slideIn 0.5s forwards;
+        font-weight: 600;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    footer {
+        background-color: var(--darker-color);
+        padding: 3rem 0;
+        border-top: 1px solid rgba(255, 204, 0, 0.1);
+    }
+    
+    .social-icons a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-color: var(--primary-color);
+        color: var(--dark-color);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 40px;
+        margin-right: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-5px);
+    }
+    
+    .featured-artist-section {
+        padding: 100px 0 80px 0;
+        background-color: var(--dark-color);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .featured-artist-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(255, 204, 0, 0.05) 0%, rgba(18, 25, 32, 0) 70%);
+        pointer-events: none;
+    }
+    
+    .featured-artist-section h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+    }
+    
+    .featured-artist-section h2 span {
+        color: var(--primary-color);
+    }
+    
+    .title-underline {
+        width: 80px;
+        height: 3px;
+        background-color: var(--primary-color);
+        margin: 0 auto 3rem;
+    }
+    
+    @media (max-width: 991px) {
+        .integrated-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .email-form-integrated {
+            height: auto;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2.5rem;
+        }
+        
+        .lead {
+            font-size: 1.2rem;
+        }
+        
+        .countdown-item {
+            margin: 0 0.5rem;
+            padding: 15px;
+            min-width: 80px;
+        }
+        
+        .countdown-item span {
+            font-size: 2rem;
+        }
+        
+        .countdown-item p {
+            font-size: 0.8rem;
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .nav-link {
+            font-size: 16px;
+            padding: 6px 10px !important;
+        }
+        
+        .featured-artist-section {
+            padding: 80px 0 60px 0;
+        }
+        
+        .artist-feature-name {
+            font-size: 1.8rem;
+        }
+        
+        .artist-stat-value {
+            font-size: 2rem;
+        }
+        
+        .hero-section {
+            padding: 100px 0 60px 0;
+        }
+        
+        .artist-feature-img {
+            height: 500px;
+        }
+        
+        .artist-feature-header,
+        .email-form-integrated {
+            padding: 20px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .navbar-brand img {
+            height: 42px;
+        }
+        
+        .hero-section {
+            padding: 90px 0 40px 0;
+        }
+    }
+</style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+<div class="container">
+    <a class="navbar-brand" href="#">
+        <img src="{% static 'images/tikchek-logo-transparent.png' %}" alt="tikchek logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link active" href="#home">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#info">Informações</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#countdown">Contagem Regressiva</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#artists">Atrações</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-primary ms-lg-3 pulse-btn" href="#signup">Cadastre-se</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+<div class="container">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h1>THE <span>TOWN</span> 2025</h1>
+                    <p class="lead">O maior festival de música e arte de São Paulo. Cadastre-se para receber informações exclusivas sobre a venda de ingressos.</p>
+                </div>
+            </div>
+            
+            <div class="integrated-content">
+                <div class="row g-0">
+                    <div class="col-md-5">
+                        <div class="artist-feature-img">
+                            <img src="{% static 'images/logo.jpg' %}" alt="The Town Festival Logo" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row h-100 g-0">
+                            <div class="col-md-12">
+                                <div class="artist-feature-header">
+                                    <h3 class="artist-feature-name">THE TOWN 2025</h3>
+                                    <p class="artist-feature-tagline">A cidade da música em São Paulo</p>
+                                    
+                                    <div class="artist-feature-stats">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="artist-stat">
+                                                    <span class="artist-stat-value">5</span>
+                                                    <span class="artist-stat-label">Dias</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="artist-stat">
+                                                    <span class="artist-stat-value">6</span>
+                                                    <span class="artist-stat-label">Palcos</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="artist-stat">
+                                                    <span class="artist-stat-value">100+</span>
+                                                    <span class="artist-stat-label">Atrações</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12" id="signup">
+                                <div class="email-form-integrated">
+                                    <h3>Garanta prioridade nas vendas</h3>
+                                    <form id="email-form">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" placeholder="Nome completo" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="email" class="form-control" placeholder="Seu melhor email" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="tel" class="form-control" placeholder="Telefone (com DDD)" required>
+                                        </div>
+                                        <div class="form-check mb-4">
+                                            <input class="form-check-input" type="checkbox" value="" id="termsCheck" required>
+                                            <label class="form-check-label" for="termsCheck">
+                                                Aceito receber informações sobre o THE TOWN e outros eventos
+                                            </label>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">QUERO FICAR POR DENTRO</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Info Section -->
+<section id="info" class="info-section">
+<div class="container">
+    <div class="row text-center mb-5">
+        <div class="col-12">
+            <h2>Detalhes do <span>Festival</span></h2>
+            <p class="lead">Tudo o que você precisa saber sobre o THE TOWN 2025</p>
+            <div class="title-underline"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="info-card">
+                <i class="fas fa-calendar-alt"></i>
+                <h4>Data e Hora</h4>
+                <p>Setembro de 2025</p>
+                <p>Abertura dos portões: 12h</p>
+                <p>Encerramento: 2h</p>
+                <p>Última entrada: Meia-noite</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="info-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h4>Local</h4>
+                <p>Autódromo de Interlagos</p>
+                <p>São Paulo - SP</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="info-card">
+                <i class="fas fa-ticket-alt"></i>
+                <h4>Ingressos</h4>
+                <p>The Town Card já esgotado</p>
+                <p>Vendas para datas específicas em breve</p>
+                <p>Siga @thetownfestival para atualizações</p>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Countdown Section -->
+<section id="countdown" class="countdown-section">
+<div class="container text-center">
+    <h2>EM BREVE</h2>
+    <div class="countdown-box">
+        <div class="countdown-item">
+            <span id="days">00</span>
+            <p>Dias</p>
+        </div>
+        <div class="countdown-item">
+            <span id="hours">00</span>
+            <p>Horas</p>
+        </div>
+        <div class="countdown-item">
+            <span id="minutes">00</span>
+            <p>Minutos</p>
+        </div>
+        <div class="countdown-item">
+            <span id="seconds">00</span>
+            <p>Segundos</p>
+        </div>
+    </div>
+    <div class="mt-5">
+        <a href="#signup" class="btn btn-primary btn-lg">Fique por dentro das novidades</a>
+    </div>
+</div>
+</section>
+
+<!-- Artists Section -->
+<section id="artists" class="artists-section">
+<div class="container">
+    <div class="row text-center mb-5">
+        <div class="col-12">
+            <h2>Atrações <span>Confirmadas</span></h2>
+            <p class="lead">Confira os artistas confirmados e marque as datas na sua agenda</p>
+            <div class="title-underline"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="artist-card">
+                <img src="{% static 'images/Stacey-Ryan.jpg' %}" alt="Stacey Ryan" class="artist-img">
+                <div class="artist-overlay">
+                    <h3 class="artist-name">Stacey Ryan</h3>
+                    <p>6 de setembro</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="artist-card">
+                <img src="{% static 'images/green-day.jpg' %}" alt="Green Day" class="artist-img">
+                <div class="artist-overlay">
+                    <h3 class="artist-name">Green Day</h3>
+                    <p>7 de setembro</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="artist-card">
+                <img src="{% static 'images/snarky_puppy.jpg' %}" alt="Snarky Puppy" class="artist-img">
+                <div class="artist-overlay">
+                    <h3 class="artist-name">Snarky Puppy</h3>
+                    <p>12 de setembro</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-4 offset-md-2">
+            <div class="artist-card">
+                <img src="{% static 'images/mariah_foto.jpg' %}" alt="Mariah Carey" class="artist-img">
+                <div class="artist-overlay">
+                    <h3 class="artist-name">Mariah Carey</h3>
+                    <p>13 de setembro</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="artist-card">
+                <img src="{% static 'images/katy_photo.jpg' %}" alt="Katy Perry" class="artist-img">
+                <div class="artist-overlay">
+                    <h3 class="artist-name">Katy Perry</h3>
+                    <p>14 de setembro</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <a href="#signup" class="btn btn-primary">Cadastre-se para receber novidades</a>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mb-4 mb-md-0">
+            <h4>THE TOWN 2025</h4>
+            <p>O maior festival de música e arte de São Paulo com os melhores artistas nacionais e internacionais, em um ambiente incrível.</p>
+            <div class="social-icons mt-3">
+                <a href="https://www.facebook.com/profile.php?id=61568811083119"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/ticketcheckbr/"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/TikcheckBrasil"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.tiktok.com/@tikcheck_brasil"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 mb-md-0">
+            <h4>CONTATO</h4>
+            <p><i class="fas fa-envelope me-2"></i>contato@ticketchek.com</p>
+            <p><i class="fas fa-phone me-2"></i>(11) 5118-3854</p>
+            <p><i class="fas fa-map-marker-alt me-2"></i>São Paulo - SP</p>
+        </div>
+        <div class="col-md-4">
+            <h4>NEWSLETTER</h4>
+            <p>Receba novidades sobre o THE TOWN e outros eventos</p>
+            <div class="input-group mb-3">
+                <input type="email" class="form-control" placeholder="Seu email" aria-label="Email" aria-describedby="button-addon2">
+                <button class="btn btn-primary" type="button" id="button-addon2">Enviar</button>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <p class="mb-0">© 2025 THE TOWN. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</div>
+</footer>
+
+<!-- Notification -->
+<div class="notification" id="notification">
+<i class="fas fa-check-circle me-2"></i> Cadastro realizado com sucesso!
+</div>
+
+<!-- Bootstrap and JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+// Ajusta o padding da hero section baseado na altura do header
+document.addEventListener("DOMContentLoaded", function() {
+    const adjustPadding = () => {
+        const headerHeight = document.querySelector('.navbar').offsetHeight;
+        document.querySelector('.hero-section').style.paddingTop = (headerHeight + 40) + 'px';
+    };
+    
+    // Ajusta quando a página carrega
+    adjustPadding();
+    
+    // Ajusta quando a janela é redimensionada
+    window.addEventListener('resize', adjustPadding);
+    
+    // Função para atualizar o menu ativo ao rolar a página
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    
+    function highlightNavigation() {
+        const scrollY = window.pageYOffset;
+        
+        sections.forEach(current => {
+            const sectionHeight = current.offsetHeight;
+            const sectionTop = current.offsetTop - 100;
+            const sectionId = current.getAttribute('id');
+            
+            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                // Remove active class from all links
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Add active class to corresponding link
+                document.querySelector('.navbar-nav .nav-link[href*=' + sectionId + ']').classList.add('active');
+            }
+        });
+    }
+    
+    // Inicializa com Home ativo
+    highlightNavigation();
+    
+    // Atualiza ao rolar
+    window.addEventListener('scroll', highlightNavigation);
+});
+
+// Countdown Timer - definindo uma data em setembro de 2025
+const countdownDate = new Date("September 10, 2025 12:00:00").getTime();
+
+const countdown = setInterval(function() {
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById("days").innerHTML = days.toString().padStart(2, "0");
+    document.getElementById("hours").innerHTML = hours.toString().padStart(2, "0");
+    document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, "0");
+    document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, "0");
+    
+    if (distance < 0) {
+        clearInterval(countdown);
+        document.getElementById("days").innerHTML = "00";
+        document.getElementById("hours").innerHTML = "00";
+        document.getElementById("minutes").innerHTML = "00";
+        document.getElementById("seconds").innerHTML = "00";
+    }
+}, 1000);
+
+// Form Submission
+document.getElementById("email-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    // Get form values
+    const name = e.target.elements[0].value;
+    const email = e.target.elements[1].value;
+    const phone = e.target.elements[2].value;
+    
+    // Here you would normally send this data to a server
+    console.log("Form submitted with:", { name, email, phone });
+    
+    // Show success notification
+    const notification = document.getElementById("notification");
+    notification.style.display = "block";
+    
+    // Clear form
+    e.target.reset();
+    
+    // Hide notification after 3 seconds
+    setTimeout(function() {
+        notification.style.display = "none";
+    }, 3000);
+});
+
+// Smooth Scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+        
+        // Close mobile menu when clicking a link
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        if (navbarCollapse.classList.contains('show')) {
+            navbarCollapse.classList.remove('show');
+        }
+    });
+});
+</script>
+</body>
+</html>
