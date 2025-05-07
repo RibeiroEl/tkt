@@ -61,9 +61,9 @@ def form_submit(request):
                 except Cliente.DoesNotExist:
                     # Cria novo cliente
                     Cliente.objects.create(nome=name, email=email, telefone=telefone)
-                    hash = rio.encrypt(email)
-                    rio.sender(email, name, hash)
-                    return JsonResponse({'success': True})
+                    hash_confirmacao = rio.encrypt(email) # Renomeei para clareza
+                    rio.sender(email, name, hash_confirmacao)
+                    return JsonResponse({'success': True, 'message': 'Cadastro realizado com sucesso! Por favor, verifique seu e-mail para confirmação.'})
             else:
                 return JsonResponse({'success': False, 'message': 'Email com baixa reputação'}, status=400)
                 

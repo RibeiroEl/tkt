@@ -676,6 +676,7 @@
                                 <div class="email-form-integrated">
                                     <h3>Garanta prioridade nas vendas</h3>
                                     <form id="email-form">
+                                        {% csrf_token %} 
                                         <div class="mb-3">
                                             <input type="text" class="form-control" id="name-input" name="name" placeholder="Nome completo" required>
                                             <div class="invalid-feedback"></div>
@@ -1078,7 +1079,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const csrftoken = getCookie('csrftoken');
             
             // Enviar dados para o servidor
-            fetch('/api/submit-form/', {
+            fetch("{% url 'form_submit' %}", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

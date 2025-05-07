@@ -660,13 +660,13 @@
                                     <h3>Garanta prioridade nas vendas</h3>
                                     <form id="email-form">
                                         <div class="mb-3">
-                                            <input type="text" class="form-control" placeholder="Nome completo" required>
+                                            <input type="text" class="form-control" name="nome-completo" placeholder="Nome completo" required>
                                         </div>
                                         <div class="mb-3">
-                                            <input type="email" class="form-control" placeholder="Seu melhor email" required>
+                                            <input type="email" class="form-control" name="email" placeholder="Seu melhor email" required>
                                         </div>
                                         <div class="mb-3">
-                                            <input type="tel" class="form-control" placeholder="Telefone (com DDD)" required>
+                                            <input type="tel" class="form-control" name="telefone" placeholder="Telefone (com DDD)" required>
                                         </div>
                                         <div class="form-check mb-4">
                                             <input class="form-check-input" type="checkbox" value="" id="termsCheck" required>
@@ -940,30 +940,107 @@ const countdown = setInterval(function() {
 }, 1000);
 
 // Form Submission
+// Form Submission
 document.getElementById("email-form").addEventListener("submit", function(e) {
     e.preventDefault();
-    
-    // Get form values
-    const name = e.target.elements[0].value;
-    const email = e.target.elements[1].value;
-    const phone = e.target.elements[2].value;
-    
-    // Here you would normally send this data to a server
-    console.log("Form submitted with:", { name, email, phone });
-    
-    // Show success notification
-    const notification = document.getElementById("notification");
-    notification.style.display = "block";
-    
-    // Clear form
-    e.target.reset();
-    
-    // Hide notification after 3 seconds
-    setTimeout(function() {
-        notification.style.display = "none";
-    }, 3000);
-});
 
+    const nameInput = e.target.elements['nome-completo']; // Supondo que seu input de nome tem name="nome-completo"
+    const emailInput = e.target.elements['email'];     // Supondo que seu input de email tem name="email"
+    const phoneInput = e.target.elements['telefone'];   // Supondo que seu input de telefone tem name="telefone"
+
+    // É uma boa prática verificar se os elementos existem antes de pegar o valor
+    const name = nameInput ? nameInput.value : '';
+    const email = emailInput ? emailInput.value : '';
+    const phone = phoneInput ? phoneInput.value : '';
+
+    // Função para obter o token CSRF (necessário para POST no Django)
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // Esconder notificação anterior (caso exista)
+    const notification = document.getElementById("notification");
+    notification.style.display = "none";
+    notification.classList.remove('alert-success', 'alert-danger'); // Supondo que você use classes para estilizar
+
+    fetch("{% url 'form_submit' %}", { // Ou use '/form-submit/' se o JS não estiver em um template Django
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({ name: name, email: email, phone: phone })
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Se a resposta não for OK (ex: 400, 404, 500),
+            // tentamos ler o JSON de erro do backend, se houver.
+            return response.json().then(errData => {
+                throw { status: response.status, data: errData }; // Lança um objeto com status e dados do erro
+            });
+        }
+        return response.json(); // Se for OK, processa o JSON de sucesso
+    })
+    .then(data => {
+        if (data.success) {
+            notification.textContent = data.message || "Cadastro realizado com sucesso!";
+            notification.className = 'notification alert-success'; // Adicione classes para estilizar
+            notification.style.display = "block";
+            e.target.reset(); // Limpa o formulário
+        } else {
+            // Monta mensagem de erro a partir do objeto 'errors' ou 'message'
+            let errorMessage = data.message || "Ocorreu um erro.";
+            if (data.errors) {
+                let errorsArray = [];
+                for (const key in data.errors) {
+                    errorsArray.push(data.errors[key].join ? data.errors[key].join(', ') : data.errors[key]);
+                }
+                errorMessage = errorsArray.join(' ');
+            }
+            notification.textContent = errorMessage;
+            notification.className = 'notification alert-danger'; // Adicione classes para estilizar
+            notification.style.display = "block";
+        }
+    })
+    .catch(error => {
+        console.error('Fetch Error:', error);
+        let displayMessage = "Erro ao enviar o formulário.";
+        if (error.status) { // Se for um erro que jogamos do 'then' com status e data
+            if (error.data && error.data.message) {
+                displayMessage = error.data.message;
+            } else if (error.data && error.data.errors) {
+                 let errorsArray = [];
+                for (const key in error.data.errors) {
+                    errorsArray.push(error.data.errors[key].join ? error.data.errors[key].join(', ') : error.data.errors[key]);
+                }
+                displayMessage = errorsArray.join(' ');
+            } else {
+                displayMessage = `Erro ${error.status} ao processar sua solicitação.`;
+            }
+        }
+        notification.textContent = displayMessage;
+        notification.className = 'notification alert-danger';
+        notification.style.display = "block";
+    })
+    .finally(() => {
+        // Esconde a notificação após alguns segundos, independentemente do resultado
+        setTimeout(function() {
+            notification.style.display = "none";
+        }, 5000); // Aumentei o tempo para o usuário ler
+    });
+});
 // Smooth Scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
